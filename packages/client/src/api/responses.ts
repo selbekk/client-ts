@@ -10,6 +10,10 @@ export type SimpleError = {
   message: string;
 };
 
+export type UsagePlansResponse = {
+  usagePlans?: Schemas.UsagePlan[];
+};
+
 export type BadRequestError = {
   id?: string;
   message: string;

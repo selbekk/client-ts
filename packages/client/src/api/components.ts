@@ -657,6 +657,50 @@ export const acceptWorkspaceMemberInvite = (variables: AcceptWorkspaceMemberInvi
     ...variables
   });
 
+export type GetUsagePlansPathParams = {
+  /*
+   * Workspace name
+   */
+  workspaceId: Schemas.WorkspaceID;
+};
+
+export type GetUsagePlansQueryParams = {
+  dbBranchID?: string;
+};
+
+export type GetUsagePlansError = Fetcher.ErrorWrapper<
+  | {
+      status: 400;
+      payload: Responses.BadRequestError;
+    }
+  | {
+      status: 401;
+      payload: Responses.AuthError;
+    }
+  | {
+      status: 404;
+      payload: Responses.SimpleError;
+    }
+>;
+
+export type GetUsagePlansVariables = {
+  pathParams: GetUsagePlansPathParams;
+  queryParams?: GetUsagePlansQueryParams;
+} & FetcherExtraProps;
+
+/**
+ * List all the active Usage Plans in the Workspace or filter by the db_branch_name parameter.
+ */
+export const getUsagePlans = (variables: GetUsagePlansVariables) =>
+  fetch<
+    Responses.UsagePlansResponse,
+    GetUsagePlansError,
+    undefined,
+    {},
+    GetUsagePlansQueryParams,
+    GetUsagePlansPathParams
+  >({ url: '/workspaces/{workspaceId}/usageplans', method: 'get', ...variables });
+
 export type GetDatabaseListPathParams = {
   workspace: string;
 };
@@ -3171,7 +3215,8 @@ export const operationsByTag = {
     inviteWorkspaceMember,
     cancelWorkspaceMemberInvite,
     resendWorkspaceMemberInvite,
-    acceptWorkspaceMemberInvite
+    acceptWorkspaceMemberInvite,
+    getUsagePlans
   },
   database: {
     getDatabaseList,
